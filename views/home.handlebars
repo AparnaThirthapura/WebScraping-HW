@@ -1,0 +1,37 @@
+<div class="container">
+  <div class="row" class="jumbotron">
+    <h2><center>Web Scrapping with MongoDB</center></h2>
+  </div>
+
+  <nav>
+
+    <a href="/">Home</a>
+    <a href="/articles">saved articles</a>
+    <a href="/scrape">scrape new atricles</a>
+  </nav>
+
+  <div class="">
+    <h2>http://www.technewsworld.com/</h2>
+  </div>
+
+  <div class="">
+    <h3>List of the articles</h3>
+
+    <div class="">
+      {{#each Article}}
+        <div class="row">
+          <div class="col-8">
+            Article Title : {{this.articleTitle}}
+            <br>
+            Article Link:   {{this.articleLink}}
+          </div>
+          <div class="col-4">
+              <button type="button" name="button">Save Article</button>
+          </div>
+        </div>
+      {{/each}}
+    </div>
+    Article Div     Article Notes  Delete from saved
+
+  </div>
+</div>
