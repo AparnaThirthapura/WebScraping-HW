@@ -1,37 +1,66 @@
 <div class="container">
-  <div class="row" class="jumbotron">
-    <h2><center>Web Scrapping with MongoDB</center></h2>
-  </div>
-
-  <nav>
-
-    <a href="/">Home</a>
-    <a href="/articles">saved articles</a>
-    <a href="/scrape">scrape new atricles</a>
-  </nav>
-
-  <div class="">
-    <h2>http://www.technewsworld.com/</h2>
+  <div class="row">
+    <h2><center>Web Scraping with MongoDB</center></h2>
+    <h3><center>http://www.technewsworld.com/</center></h3>
   </div>
 
   <div class="">
-    <h3>List of the articles</h3>
+    <ul class="nav nav-pills">
+      <li role="presentation" class="active"><a href="#">Home</a></li>
+      <li role="presentation" class="active"><a href="/scrape">Scrape New Articles</a></li>
+      <li role="presentation" class="active"><a href="/showAllArticles">All the Articles</a></li>
+      <li role="presentation" class="active"><a href="/showSavedArticles">Saved Articles</a></li>
+    </ul>
+  </div>
 
-    <div class="">
-      {{#each Article}}
-        <div class="row">
-          <div class="col-8">
+<h2>{{title}}</h2>
+
+  <div class="">
+    {{#each AllArticles}}
+      {{#unless this.articleSaved}}
+      <div class="row" id="articlebox">
+        <div class="col-md-8">
+          <div class="d-inline-flex p-2">
             Article Title : {{this.articleTitle}}
             <br>
-            Article Link:   {{this.articleLink}}
-          </div>
-          <div class="col-4">
-              <button type="button" name="button">Save Article</button>
+            Article Link:<a href="{{this.articleLink}}">{{this.articleLink}}</a>
+            <br>
+            Article Body: {{this.articleBody}}
           </div>
         </div>
-      {{/each}}
-    </div>
-    Article Div     Article Notes  Delete from saved
-
+        <div class="col-md-4">
+          <form action="/articles/{{this.id}}" method="POST">
+            <input type="hidden" name="articleSaved" value="true">
+            <button type="submit" name="button">Save Article</button>
+          </form>
+        </div>
+      </div>
+      {{/unless}}
+    {{/each}}
   </div>
+
+  <div class="">
+    {{#each SavedArticles}}
+        {{#if this.articleSaved}}
+        <div class="row" id="articlebox">
+          <div class="col-md-8">
+            <div class="d-inline-flex p-2">
+              Article Title : {{this.articleTitle}}
+              <br>
+              Article Link:<a href="{{this.articleLink}}">{{this.articleLink}}</a>
+              <br>
+              Article Body: {{this.articleBody}}
+            </div>
+          </div>
+          <div class="col-md-4">
+              <button type="submit" name="button">Add Notes</button>
+              <button type="submit" name="button">Delete from Saved</button>
+          </div>
+        </div>
+
+        {{/if}}
+      {{/each}}
+  </div>
+
+
 </div>

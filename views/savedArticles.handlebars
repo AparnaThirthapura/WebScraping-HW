@@ -1,0 +1,16 @@
+<div class="">
+  {{#each Article}}
+      {{#if this.savoured}}
+
+        <pre>{{this.id}} . {{this.dosaName}}</pre>
+
+        <form action="/{{this.id}}?_method=PUT" method="POST">
+          <input type="hidden" name="savoured" value="true">
+          <button type="submit">Savour-It</button>
+        </form>
+
+
+      {{/if}}
+    {{/each}}
+
+</div>

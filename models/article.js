@@ -8,6 +8,11 @@ var ArticleSchema = new Schema({
     unique:true,
     required:"Article is required"
   },
+  articleBody:{
+    type:String,
+    unique:true,
+    required:"Article Body is required"
+  },
   articleLink:{
     type:String,
     trim:true,
