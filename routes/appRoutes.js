@@ -56,7 +56,7 @@ router.get("/scrape", function(req, res) {
       });
     });
   });
-  res.render("home", {title:"Scrapping complete"});
+  res.render("home", {title:"Scraping complete"});
 });
 
 router.get("/showAllArticles", function(req, res) {
@@ -72,16 +72,18 @@ router.get("/showAllArticles", function(req, res) {
 });
 
 router.get("/showSavedArticles", function(req, res){
-  var query = Article.find({articleSaved:true}).limit(10);
+  var query = Article.find({articleSaved:true}).limit(10).populate("note");
   query.exec(function(err, docs){
     if(err)
       console.log(err);
-    else
+    else {
+      console.log(docs);
       res.render("home", {SavedArticles:docs});
+    }
   });
 });
 
-router.post("/articles/:id", function(req, res){
+router.put("/articles/:id", function(req, res){
   Article.findByIdAndUpdate({ "_id": req.params.id}, {$set:{articleSaved:true}}, function(err, docs){
     if(err)
       console.log(err);
@@ -91,7 +93,28 @@ router.post("/articles/:id", function(req, res){
   });
 });
 
-router.get("/articles/:id", function(req, res) {
+router.delete("/articles/:id", function(req, res){
+  Article.findByIdAndRemove({ "_id": req.params.id},function(err, docs){
+    if(err)
+      console.log(err);
+    else {
+      res.render("home", {title:"Article Deleted"});
+    }
+  });
+});
+
+router.put("/savedArticles/:id", function(req, res){
+  Article.findByIdAndUpdate({ "_id": req.params.id}, {$set:{articleSaved:false}}, function(err, docs){
+    if(err)
+      console.log(err);
+    else {
+      res.render("home", {title:"Article Deleted from Saved"});
+    }
+  });
+});
+
+
+router.get("/viewNote/:id", function(req, res) {
   Article.findOne({ "_id": req.params.id })
   .populate("note")
   .exec(function(error, doc) {
@@ -100,13 +123,22 @@ router.get("/articles/:id", function(req, res) {
       console.log(error);
     }
     else {
-      res.json({Article:doc});
+      console.log("viewNote found....")
+      console.log(doc);
+      res.render("home", doc);
     }
   });
 });
 
-router.post("/articles/:id", function(req, res) {
+router.post("/addNote/:id", function(req, res) {
   var newNote = new Note(req.body);
+
+  console.log("******************");
+  console.log("Adding note.......");
+  console.log("ID: " + req.params.id);
+  //console.log("Body: " + req.body);
+  console.log("******************");
+
 
   newNote.save(function(error, doc) {
     if (error) {
@@ -119,10 +151,23 @@ router.post("/articles/:id", function(req, res) {
           console.log(err);
         }
         else {
-          res.send(doc);
+          console.log("Note Added");
+          res.render("home"); /*Put something in modal*/
         }
       });
     }
   });
 });
+
+router.delete("/deleteNote/:id", function(req, res) {
+  Note.remove({ "_id": req.params.id }, function(err, removed){
+    if(err)
+      console.log(err);
+    else {
+      console.log("Note Removed");
+    }
+  });
+});
+
+
 module.exports = router;

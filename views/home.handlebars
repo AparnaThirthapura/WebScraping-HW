@@ -1,12 +1,12 @@
 <div class="container">
   <div class="row">
     <h2><center>Web Scraping with MongoDB</center></h2>
-    <h3><center>http://www.technewsworld.com/</center></h3>
+    <h3><center>http://www.pcmag.com/news</center></h3>
   </div>
 
   <div class="">
     <ul class="nav nav-pills">
-      <li role="presentation" class="active"><a href="#">Home</a></li>
+      <li role="presentation" class="active"><a href="/">Home</a></li>
       <li role="presentation" class="active"><a href="/scrape">Scrape New Articles</a></li>
       <li role="presentation" class="active"><a href="/showAllArticles">All the Articles</a></li>
       <li role="presentation" class="active"><a href="/showSavedArticles">Saved Articles</a></li>
@@ -29,15 +29,44 @@
           </div>
         </div>
         <div class="col-md-4">
-          <form action="/articles/{{this.id}}" method="POST">
+          <form action="/articles/{{this.id}}?_method=PUT" method="POST">
             <input type="hidden" name="articleSaved" value="true">
             <button type="submit" name="button">Save Article</button>
+          </form>
+
+          <form action="/articles/{{this.id}}?_method=DELETE" method="POST">
+            <input type="hidden" name="articleSaved" value="true">
+            <button type="submit" name="button">Delete Article</button>
           </form>
         </div>
       </div>
       {{/unless}}
     {{/each}}
   </div>
+
+  <div class="">
+    {{#if this.articleSaved}}
+      <div class="row" id="articlebox">
+        <div class="col-md-8">
+          <div class="d-inline-flex p-2">
+            Article Title : {{this.articleTitle}}
+            <br>
+            Article Link:<a href="{{this.articleLink}}">{{this.articleLink}}</a>
+            <br>
+            Article Body: {{this.articleBody}}
+            <br><br>
+            Note title: {{this.note.noteTitle}}
+            <br>
+            Note text: {{this.note.noteBody}}
+          </div>
+        </div>
+
+      </div>
+      {{/if}}
+
+  </div>
+
+
 
   <div class="">
     {{#each SavedArticles}}
@@ -50,11 +79,61 @@
               Article Link:<a href="{{this.articleLink}}">{{this.articleLink}}</a>
               <br>
               Article Body: {{this.articleBody}}
+              <br>
+
             </div>
           </div>
           <div class="col-md-4">
-              <button type="submit" name="button">Add Notes</button>
-              <button type="submit" name="button">Delete from Saved</button>
+              <button type="submit" name="button" data-toggle="modal" data-target="#myModal1">Add Notes</button>
+
+              <button type="submit" name="button" data-toggle="modal" data-target="#myModal2">
+                <a href="/viewNote/{{this.id}}?_method=GET">View Note</a></button>
+
+              <div id="myModal1" class="modal fade" role="dialog">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <form class="" action="/addNote/{{this.id}}" method="post">
+                        <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal">&times;</button>
+                          <h4 class="modal-title">
+                            <input type="text" placeholder="Enter Notes Title" name="noteTitle" required>
+                          </h4>
+                        </div>
+                        <div class="modal-body">
+                          <input type="text" placeholder="Enter Notes Body" name="noteBody" required>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="submit" class="btn btn-default">Save Note</button>
+                          <button type="button" class="btn btn-default"><a href="/deleteNote/{{this.id}}?_method=DELETE"></a>Delete Note</button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+
+
+                <div id="myModal2" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                            <div class="modal-header">
+                              <button type="button" class="close" data-dismiss="modal">&times;</button>
+                              <h4 class="modal-title">
+                                {{this.noteTitle}}
+                              </h4>
+                            </div>
+                            <div class="modal-body">
+                              {{this.noteBody}}
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-default"><a href="/deleteNote/{{this.id}}?_method=DELETE"></a>Delete Note</button>
+                            </div>
+                      </div>
+                    </div>
+                  </div>
+
+              <form action="/savedArticles/{{this.id}}?_method=PUT" method="POST">
+                <button type="submit" name="button">Delete from Saved</button>
+              </form>
           </div>
         </div>
 
