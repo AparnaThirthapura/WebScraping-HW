@@ -84,23 +84,23 @@
             </div>
           </div>
           <div class="col-md-4">
-              <button type="submit" name="button" data-toggle="modal" data-target="#myModal1">Add Notes</button>
+              <button type="submit" name="button" data-toggle="modal" data-target="#myModal1_{{this.id}}">Add Notes</button>
 
               <button type="submit" name="button" data-toggle="modal" data-target="#myModal2">
                 <a href="/viewNote/{{this.id}}?_method=GET">View Note</a></button>
 
-              <div id="myModal1" class="modal fade" role="dialog">
+              <div id="myModal1_{{this.id}}" class="modal fade" role="dialog">
                   <div class="modal-dialog">
                     <div class="modal-content">
                       <form class="" action="/addNote/{{this.id}}" method="post">
                         <div class="modal-header">
                           <button type="button" class="close" data-dismiss="modal">&times;</button>
                           <h4 class="modal-title">
-                            <input type="text" placeholder="Enter Notes Title" name="noteTitle" required>
+                            <input type="text" name="noteTitle" required>
                           </h4>
                         </div>
                         <div class="modal-body">
-                          <input type="text" placeholder="Enter Notes Body" name="noteBody" required>
+                          <textarea name="noteBody" rows="4" cols="80" required></textarea>
                         </div>
                         <div class="modal-footer">
                           <button type="submit" class="btn btn-default">Save Note</button>
@@ -110,26 +110,6 @@
                     </div>
                   </div>
                 </div>
-
-
-                <div id="myModal2" class="modal fade" role="dialog">
-                    <div class="modal-dialog">
-                      <div class="modal-content">
-                            <div class="modal-header">
-                              <button type="button" class="close" data-dismiss="modal">&times;</button>
-                              <h4 class="modal-title">
-                                {{this.noteTitle}}
-                              </h4>
-                            </div>
-                            <div class="modal-body">
-                              {{this.noteBody}}
-                            </div>
-                            <div class="modal-footer">
-                              <button type="button" class="btn btn-default"><a href="/deleteNote/{{this.id}}?_method=DELETE"></a>Delete Note</button>
-                            </div>
-                      </div>
-                    </div>
-                  </div>
 
               <form action="/savedArticles/{{this.id}}?_method=PUT" method="POST">
                 <button type="submit" name="button">Delete from Saved</button>
