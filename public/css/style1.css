@@ -2,3 +2,11 @@ body{
   background-image: url("/images/image1.jpeg");
   background-color: transparent;
 }
+.nav-pills>li.active>a, .nav-pills>li.active>a:focus, .nav-pills>li.active>a:hover{
+  color: #fff;
+  background-color: #484e52;
+}
+
+#articlebox{
+  margin-bottom: 20px;
+}

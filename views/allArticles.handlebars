@@ -1,0 +1,22 @@
+<div class="">
+  <h3>List of the articles</h3>
+  
+    {{#each Article}}
+      <div class="row" id="articlebox">
+        <div class="col-md-8">
+          <div class="d-inline-flex p-2">
+            Article Title : {{this.articleTitle}}
+            <br>
+            Article Link:<a href="{{this.articleLink}}">{{this.articleLink}}</a>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <form action="/articles/{{this.id}}?_method=PUT" method="POST">
+            <input type="hidden" name="articleSaved" value="true">
+            <button type="button" name="button">Save Article</button>
+          </form>
+        </div>
+      </div>
+    {{/each}}
+
+</div>
