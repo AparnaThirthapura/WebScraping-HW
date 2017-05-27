@@ -28,13 +28,17 @@ app.use(bodyParser.urlencoded({
 app.use(express.static("public"));
 
 // Database configuration with mongoose
-mongoose.connect("mongodb://localhost/WebScrapeDB");
-var db = mongoose.connection;
+var dbURI = "mongodb://localhost/WebScrapeDB";
+if(process.env.MONGODB_URI){
+  mongoose.connect(process.env.MONGODB_URI);
+} else {
+  mongoose.connect(dbURI);
+}
 
+var db = mongoose.connection;
 db.on("error", function(error) {
   console.log("Mongoose Error: ", error);
 });
-
 db.once("open", function() {
   console.log("Mongoose connection successful.");
 });
